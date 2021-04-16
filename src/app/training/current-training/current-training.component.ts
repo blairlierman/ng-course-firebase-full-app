@@ -11,8 +11,7 @@ export class CurrentTrainingComponent implements OnInit {
 
   @Output() trainingExit = new EventEmitter();
   progress = 0;
-  timer!: number;
-
+  timer!: number | ReturnType<typeof setInterval>
 
   constructor(private dialog: MatDialog) { }
 
@@ -24,14 +23,14 @@ export class CurrentTrainingComponent implements OnInit {
     this.timer = setInterval(() => {
       this.progress = this.progress + 5;
       if (this.progress >= 100) {
-        clearInterval(this.timer);
+        clearInterval(<number>this.timer);
       }
     }, 1000);
   }
 
   onStopTraining()
   {
-    clearInterval(this.timer);
+    clearInterval(<number>this.timer);
     const dialogRef = this.dialog.open(StopTrainingComponent, {data: {
       progress: this.progress
     }})
