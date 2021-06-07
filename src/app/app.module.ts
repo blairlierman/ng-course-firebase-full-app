@@ -14,7 +14,6 @@ import { TrainingService } from './training/training.service';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from "../environments/environment";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireAuthModule } from "@angular/fire/auth";
 import { UIService } from './shared/ui.service';
 import { AuthModule } from './auth/auth.module';
 import { TrainingModule } from './training/training.module';
@@ -38,7 +37,6 @@ import { TrainingModule } from './training/training.module';
     TrainingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule,
   ],
   providers: [AuthService, TrainingService, UIService],
   bootstrap: [AppComponent],
