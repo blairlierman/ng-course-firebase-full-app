@@ -10,11 +10,11 @@
             <mat-error>Email is invalid or missing</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input type="password" matInput placeholder="Your password" name="password" 
+            <input type="password" matInput placeholder="Your password" name="password"
             formControlName="password"
             >
         </mat-form-field>
-        <button *ngIf="!isLoading" mat-raised-button type="submit" color="primary" [disabled]="loginForm.invalid">Login</button>
-        <mat-spinner *ngIf="isLoading" ></mat-spinner>
+        <button *ngIf="(isLoading$ | async) === false || null" mat-raised-button type="submit" color="primary" [disabled]="loginForm.invalid">Login</button>
+        <mat-spinner *ngIf="isLoading$ | async" ></mat-spinner>
     </form>
 </section>
