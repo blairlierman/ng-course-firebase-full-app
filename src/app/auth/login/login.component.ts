@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { UIService } from 'src/app/shared/ui.service';
 import { AuthService } from '../auth.service';
-import * as fromApp from '../../app.reducer'
+import * as fromRoot from '../../app.reducer'
 import { map } from "rxjs/operators";
 
 @Component({
@@ -18,13 +18,11 @@ export class LoginComponent implements OnInit {
   private loadingSubs: Subscription = new Subscription;
 
   constructor(private authService: AuthService, private uiService: UIService,
-    private store: Store<{ui: fromApp.State }>) {
+    private store: Store<fromRoot.State>) {
   }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.pipe(
-      map((state: { ui: { isLoading: boolean; }; }) => state.ui.isLoading)
-    );
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.loginForm = new FormGroup({
       email: new FormControl('', { validators: [Validators.required, Validators.email] }),
       password: new FormControl('', { validators: [Validators.required] }),
