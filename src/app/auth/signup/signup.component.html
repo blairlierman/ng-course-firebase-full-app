@@ -2,7 +2,7 @@
     <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
         #f="ngForm" (ngSubmit)="onSubmit(f)">
         <mat-form-field>
-            <input type="email" matInput placeholder="Your email" ngModel name="email" 
+            <input type="email" matInput placeholder="Your email" ngModel name="email"
             email required #emailInput="ngModel">
             <mat-error *ngIf="emailInput.hasError('required')">Field must not be empty</mat-error>
             <mat-error *ngIf="!emailInput.hasError('required')">Email is invalid</mat-error>
@@ -15,16 +15,16 @@
         </mat-form-field>
         <mat-form-field>
             <input matInput placeholder="Your Birthdate" [matDatepicker]="picker"
-                [max]="maxDate" 
+                [max]="maxDate"
                 name="birthday"
                 ngModel
-                required   
+                required
             >
             <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-checkbox ngModel name="agree" required color="primary">Agree to Terms and Conditions</mat-checkbox>
-        <button *ngIf="!isLoading" mat-raised-button type="submit" color="primary" [disabled]="f.invalid">Submit</button>
-        <mat-spinner *ngIf="isLoading" ></mat-spinner>
+        <button *ngIf="(isLoading$ | async) === false || null" mat-raised-button type="submit" color="primary" [disabled]="f.invalid">Submit</button>
+        <mat-spinner *ngIf="isLoading$ | async" ></mat-spinner>
     </form>
 </section>
