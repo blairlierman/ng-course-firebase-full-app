@@ -2,11 +2,12 @@ import { Exercise } from "./exercise.model";
 import { TrainingActions, SET_AVAILABLE_TRAININGS, STOP_TRAINING, SET_FINISHED_TRAININGS, START_TRAINING} from "./training.actions";
 import * as fromRoot from "../app.reducer";
 import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { StaticReflector } from "@angular/compiler";
 
 export interface TrainingState {
   availableExercises: Exercise[];
   finishedExercises: Exercise[];
-  activeTraining: Exercise | null;
+  activeTraining: Exercise | null | undefined;
 }
 
 export interface State extends fromRoot.State
@@ -36,7 +37,7 @@ export function trainingReducer(state = initialState, action: TrainingActions): 
     case START_TRAINING:
       return {
         ...state,
-        activeTraining: action.payload
+        activeTraining: {...state.availableExercises.find(ex => ex.id === action.payload)} as Exercise
       }
     case STOP_TRAINING:
       return {
