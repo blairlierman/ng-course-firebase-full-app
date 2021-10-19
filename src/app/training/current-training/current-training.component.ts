@@ -1,7 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
 import { StopTrainingComponent } from './stop-training.component';
 import * as fromTraining from '../training.reducer'

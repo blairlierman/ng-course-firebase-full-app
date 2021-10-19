@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, RouterStateSnapshot, UrlSegment, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
 import * as fromRoot from "../app.reducer"
@@ -8,7 +8,7 @@ import { take } from "rxjs/operators";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
-    constructor(private authService: AuthService, private router: Router,
+    constructor(private authService: AuthService,
       private store: Store<fromRoot.State>) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
