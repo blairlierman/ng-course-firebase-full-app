@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Store } from "@ngrx/store";
 import { Subscription, Subject } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, take } from "rxjs/operators";
 import { UIService } from "../shared/ui.service";
 import { Exercise } from "./exercise.model";
 import * as fromTraining from './training.reducer'
@@ -16,7 +16,6 @@ export class TrainingService {
     finishedExercisesChanged = new Subject<Exercise[]>();
 
     private availableExercises: Exercise[] = [];
-    private runningExercise!: Exercise | undefined | null;
     private fbSubscriptions: Subscription[] = [];
 
     constructor(private db: AngularFirestore, private uiService: UIService,
@@ -53,29 +52,30 @@ export class TrainingService {
     }
 
     completeExercise() {
-        if(this.runningExercise) {
+      this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(exercise => {
+        if(exercise) {
             this.addDataToDatabase( {
-                    ...this.runningExercise,
+                    ...exercise,
                     date: new Date(),
                     state: 'completed'
         })};
         this.store.dispatch(new Training.StopTraining());
+      });
+
     }
 
     cancelExercise(progress: number) {
-        if(this.runningExercise) {
-            this.addDataToDatabase( {
-                    ...this.runningExercise,
-                    date: new Date(),
-                    state: 'cancelled',
-                    duration:  this.runningExercise.duration * (progress / 100),
-                    calories:  this.runningExercise.calories * (progress / 100),
+      this.store.select(fromTraining.getActiveTraining).pipe(take(1)).subscribe(exercise => {
+        if(exercise) {
+              this.addDataToDatabase( {
+                      ...exercise,
+                      date: new Date(),
+                      state: 'cancelled',
+                      duration:  exercise.duration * (progress / 100),
+                      calories:  exercise.calories * (progress / 100),
         })};
         this.store.dispatch(new Training.StopTraining());
-    }
-
-    getRunningExercise() {
-        return { ...this.runningExercise };
+      });
     }
 
     fetchCompletedOrCancelledExercises()
